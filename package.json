@@ -1,20 +1,19 @@
 {
   "name": "youtube-tv-client",
-  "version": "1.0.1",
-  "description": "YouTube client that uses the TV interface",
+  "version": "1.0.2",
+  "description": "Native YouTube TV client with built-in ad blocking",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build": "electron-builder"
+    "blocklist": "node scripts/build-blocklist.js",
+    "build": "npm run blocklist && electron-builder",
+    "build:linux": "npm run blocklist && electron-builder --linux dir --x64 --publish never"
   },
   "build": {
-    "appId": "com.haroon01.youtubetvclient",
+    "appId": "com.arief0303.youtubetvclient",
     "productName": "YouTubeTV",
-    "files": [
-      "index.js",
-      "package.json"
-    ],
+    "executableName": "youtube-tv-client",
+    "files": ["index.js", "package.json", "resources/adblock.bin", "img/icon/youtube.png"],
     "win": {
       "target": ["portable"],
       "icon": "img/icon/youtube.ico",
@@ -24,14 +23,12 @@
       "target": ["AppImage"],
       "icon": "img/icon/youtube.png",
       "artifactName": "${productName}_v${version}_linux.${ext}",
-      "category": "Utility"
+      "category": "AudioVideo"
     }
   },
   "keywords": [],
   "author": "Haroon01",
   "license": "ISC",
-  "devDependencies": {
-    "electron": "^31.3.0",
-    "electron-builder": "^24.13.3"
-  }
+  "dependencies": { "@ghostery/adblocker-electron": "2.20.3" },
+  "devDependencies": { "electron": "45.2.2", "electron-builder": "26.18.0" }
 }

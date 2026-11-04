@@ -1,0 +1,3 @@
+#!/bin/sh
+# Native portable Electron; use the unprivileged namespace sandbox, not a root-owned helper.
+exec "$HOME/Applications/youtube-tv-client/youtube-tv-client" --disable-setuid-sandbox "$@"
