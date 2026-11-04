@@ -1,3 +1,5 @@
 #!/bin/sh
 # Native portable Electron; use the unprivileged namespace sandbox, not a root-owned helper.
+# Steam's injected overlay prevents Electron's GPU subprocess from starting.
+unset LD_PRELOAD
 exec "$HOME/Applications/youtube-tv-client/youtube-tv-client" --disable-setuid-sandbox "$@"

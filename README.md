@@ -20,7 +20,9 @@ app runs natively, with no runtime container or Node/npm dependency on the host.
 
 The launcher disables only the setuid sandbox helper; renderer sandboxing stays
 on using unprivileged user namespaces. No root-owned helper or `--no-sandbox`
-is required on the Steam Deck.
+is required on the Steam Deck. The launcher also clears `LD_PRELOAD` for this app
+only: Steam's overlay injection prevents Electron's GPU subprocess from starting.
+GPU acceleration and renderer sandboxing remain enabled.
 
 ## Upstream instructions
 
