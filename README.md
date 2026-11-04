@@ -24,6 +24,28 @@ is required on the Steam Deck. The launcher also clears `LD_PRELOAD` for this ap
 only: Steam's overlay injection prevents Electron's GPU subprocess from starting.
 GPU acceleration and renderer sandboxing remain enabled.
 
+## Development-only blocking diagnostics
+
+Logging is off by default. To enable locally, create the empty file
+`~/.config/youtube-tv-client/adblock-debug.enabled`, then restart the app.
+Alternatively launch with `--adblock-debug`. Remove the marker and any flag,
+then restart, to disable. Enabling this changes no filtering rules.
+
+Counts are written to `~/.config/youtube-tv-client/adblock-debug.jsonl` and the
+app's console. Records contain only a timestamp, random session ID, event name,
+and cumulative counts: `blockedRequests` and `redirectedRequests` are Ghostery's
+network decisions; `clientCancelledRequests` observes Chromium's actual
+`net::ERR_BLOCKED_BY_CLIENT` errors. These can include trackers, not just ads.
+No URLs, domains, video IDs, filter text or request headers are recorded.
+
+The first activity is recorded immediately; later changes are batched every
+10 seconds and once at normal exit. The private log rotates at 256 KiB with one
+backup. Counts restart each session; they do not measure cosmetic/scriptlet
+ad removal or prove every video-ad format is blocked. A zero counter is not
+proof those other mechanisms failed. Logging failures do not stop filtering.
+Run `npm run test:logging` inside the development container for the logger-only
+unit checks; their synthetic fixtures are not evidence of real blocked ads.
+
 ## Upstream instructions
 
 A simple electron app that gives access to the YouTube TV interface similar to the AndroidTV App. 

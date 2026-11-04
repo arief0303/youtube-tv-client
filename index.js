@@ -1,5 +1,6 @@
 const { app, BrowserWindow, dialog, session } = require('electron');
 const { ElectronBlocker } = require('@ghostery/adblocker-electron');
+const { startAdblockDebug } = require('./adblock-debug');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -40,6 +41,13 @@ async function enableAdBlocking() {
         return { ...result, scripts: result.scripts.map(script => `(() => {\n${script}\n})();`) };
     };
     blocker.enableBlockingInSession(session.defaultSession);
+    const directory = app.getPath('userData');
+    const stopDebugLogging = startAdblockDebug(blocker, session.defaultSession, {
+        enabled: process.argv.includes('--adblock-debug') ||
+            fs.existsSync(path.join(directory, 'adblock-debug.enabled')),
+        logPath: path.join(directory, 'adblock-debug.jsonl')
+    });
+    app.once('before-quit', stopDebugLogging);
     console.info('Ad blocking enabled');
 }
 

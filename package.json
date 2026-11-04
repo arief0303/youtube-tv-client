@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
+    "test:logging": "node --test test/adblock-debug.test.js",
     "blocklist": "node scripts/build-blocklist.js",
     "build": "npm run blocklist && electron-builder",
     "build:linux": "npm run blocklist && electron-builder --linux dir --x64 --publish never"
@@ -13,7 +14,7 @@
     "appId": "com.arief0303.youtubetvclient",
     "productName": "YouTubeTV",
     "executableName": "youtube-tv-client",
-    "files": ["index.js", "package.json", "resources/adblock.bin", "img/icon/youtube.png"],
+    "files": ["index.js", "adblock-debug.js", "package.json", "resources/adblock.bin", "img/icon/youtube.png"],
     "win": {
       "target": ["portable"],
       "icon": "img/icon/youtube.ico",
